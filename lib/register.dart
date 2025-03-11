@@ -18,7 +18,7 @@ class _MyRegisterState extends State<MyRegister> {
 
   void _validateAndSubmit() {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Registration successful')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Registration Successful')));
     }
   }
 

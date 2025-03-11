@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class MyLogin extends StatefulWidget {
@@ -14,9 +15,16 @@ class _MyLoginState extends State<MyLogin> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();// Form Key for validation
 
-  void _validateAndSubmit() {
+  void _validateAndSubmit() async {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Login successful')));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('email', _emailController.text);
+      prefs.setString('password', _passwordController.text);
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:
+      Text('Email: ${_emailController.text}, Password: ${_passwordController.text}')));
+
+      Navigator.pushNamed(context, 'profile');
     }
   }
 
@@ -171,7 +179,7 @@ class _MyLoginState extends State<MyLogin> {
                         children: [
                           TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, 'register');
+                              Navigator.pushReplacementNamed(context, 'register');
                             },
                             child: Text(
                               'Don\'t have an account? Register',
