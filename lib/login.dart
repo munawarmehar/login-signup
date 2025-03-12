@@ -18,13 +18,20 @@ class _MyLoginState extends State<MyLogin> {
   void _validateAndSubmit() async {
     if (_formKey.currentState!.validate()) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('email', _emailController.text);
-      prefs.setString('password', _passwordController.text);
+      String savedEmail = prefs.getString('email') ?? '';
+      String savedPassword = prefs.getString('password') ?? '';
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:
-      Text('Email: ${_emailController.text}, Password: ${_passwordController.text}')));
+      if (_emailController.text == savedEmail &&
+          _passwordController.text == savedPassword) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:
+        Text('Login Successful')));
 
-      Navigator.pushNamed(context, 'profile');
+        Navigator.pushReplacementNamed(context, 'profile');
+      }
+      else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Invalid email or password')));
+      }
     }
   }
 

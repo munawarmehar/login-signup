@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyRegister extends StatefulWidget {
   const MyRegister({super.key});
@@ -16,9 +17,14 @@ class _MyRegisterState extends State<MyRegister> {
   final TextEditingController _confirmPasswordController = TextEditingController();
 
 
-  void _validateAndSubmit() {
+  void _validateAndSubmit() async {
     if (_formKey.currentState!.validate()) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('email', _emailController.text);
+      prefs.setString('password', _passwordController.text);
+
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Registration Successful')));
+      Navigator.pushReplacementNamed(context, 'login');
     }
   }
 
@@ -26,7 +32,7 @@ class _MyRegisterState extends State<MyRegister> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/www.jpg'), fit: BoxFit.cover)
+          image: DecorationImage(image: AssetImage('assets/qq.jpg'), fit: BoxFit.cover)
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -35,7 +41,7 @@ class _MyRegisterState extends State<MyRegister> {
             Container(
               padding: EdgeInsets.only(left: 120, top: 160),
               child: Text('Create Account', style: TextStyle(
-                  color: Colors.black, fontSize: 42, fontWeight: FontWeight.bold
+                  color: Colors.grey, fontSize: 42, fontWeight: FontWeight.bold
               )),
             ),
             SingleChildScrollView(
